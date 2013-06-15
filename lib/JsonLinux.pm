@@ -1,10 +1,13 @@
 package JsonLinux;
-use Dancer ':syntax';
+use Dancer ":syntax";
 
-our $VERSION = '0.1';
+use common::sense;
 
-get '/' => sub {
-    template 'index';
+our $VERSION = "0.1.0";
+
+get "/" => sub {
+    return [qw(hello foo bar)];
+
 };
 
 true;
