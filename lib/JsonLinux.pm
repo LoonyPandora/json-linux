@@ -22,4 +22,4 @@ get "/cpu" => sub {
 };
 
 
-true;
+1;
