@@ -39,6 +39,8 @@ sub ipc_run_command {
 
         my $cmd = $args->{command};
 
+        # Username and password can be anything - so just uri escape them
+        # The command is not user-provided - so no need to escape that
         $pass = uri_escape($pass);
         $user = uri_escape($user);
 
