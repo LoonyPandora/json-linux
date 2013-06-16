@@ -2,7 +2,6 @@ package JsonLinux::API::cpuinfo;
 
 use Dancer ':syntax';
 use Dancer::App;
-use Data::Dump qw(dump);
 
 use common::sense;
 
@@ -20,7 +19,7 @@ get "/cpuinfo" => sub {
         my ($key, $value) = split(":", $line);
         chomp($key, $value);
         $key   =~ s/\t+//g;
-        $value =~ s/^\s//g;
+        $value =~ s/^\s+//g;
 
         if ($key) {
             if ($key eq "flags") {
