@@ -23,7 +23,11 @@ get "/cpuinfo" => sub {
         $value =~ s/^\s//g;
 
         if ($key) {
-            $processor[$proc]{$key} = $value;
+            if ($key eq "flags") {
+                $processor[$proc]{$key} = [split(" ", $value)];
+            } else {
+                $processor[$proc]{$key} = $value;
+            }
         }
     }
 
