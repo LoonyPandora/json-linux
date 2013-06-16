@@ -1,6 +1,7 @@
 appname:    "JsonLinux"
 charset:    "UTF-8"
 serializer: "JSON"
+logger:     "console"
 
 engines:
     JSON:
