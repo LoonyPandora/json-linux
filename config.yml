@@ -4,9 +4,9 @@ serializer: "JSON"
 
 engines:
     JSON:
-        pretty:          0
+        pretty:          1
         allow_blessed:   0
-        canonical:       0
+        canonical:       1
         convert_blessed: 0
-        utf8:            0
+        utf8:            1
 
