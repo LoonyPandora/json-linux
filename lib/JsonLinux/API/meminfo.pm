@@ -23,7 +23,6 @@ get "/meminfo" => sub {
         $value =~ s/^\s+//g;
 
         $output{$key} = $value
-
     }
 
     return \%output;
