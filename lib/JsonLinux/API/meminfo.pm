@@ -5,9 +5,15 @@ use Dancer::App;
 
 use common::sense;
 
+use JsonLinux::Core;
+
 
 get "/meminfo" => sub {
-    my @raw = qx{/bin/cat /proc/meminfo};
+    my @raw = JsonLinux::Core::run_command({
+        user    => "vagrant",
+        pass    => "vagrant",
+        command => "/bin/cat /proc/meminfo",
+    });
 
     my %output;
     for my $line (@raw) {

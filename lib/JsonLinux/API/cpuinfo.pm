@@ -5,9 +5,15 @@ use Dancer::App;
 
 use common::sense;
 
+use JsonLinux::Core;
+
 
 get "/cpuinfo" => sub {
-    my @raw = qx{/bin/cat /proc/cpuinfo};
+    my @raw = JsonLinux::Core::run_command({
+        user    => "vagrant",
+        pass    => "vagrant",
+        command => "/bin/cat /proc/cpuinfo",
+    });
 
     my @processor;
     my $proc = 0;
