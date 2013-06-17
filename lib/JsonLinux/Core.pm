@@ -3,12 +3,14 @@ package JsonLinux::Core;
 use common::sense;
 
 use Data::Dump qw(dump);
-use IPC::Cmd qw(run QUOTE);
+use IPC::Cmd qw(run run_forked QUOTE);
 use MIME::Base64;
 use Dancer::App;
 use Dancer ':syntax';
 use URI::Escape;
+use IPC::System::Simple qw(system systemx capture capturex);
 
+use String::ShellQuote qw(shell_quote);
 
 # Core stuff
 sub run_command {
@@ -26,33 +28,31 @@ sub run_command {
 sub ipc_run_command {
     my ($args) = @_;
 
+    # Defaults targetpw
+
     # Authorization Basic dmFncmFudDonO2xzO1wnQCcnIXw+I145MC1fKSgkJDsoOn17JTIwJTM0XCc=
     # vagrant:';ls;\'@''!|>#^90-_)($$;(:}{%20%34\'
 
     # Authorization Basic dmFncmFudDp2YWdyYW50
     # vagrant:vagrant
 
+    # Authorization Basic dGVzdDp0ZXN0
+    # test:test
+
     my $authorization = request->header('Authorization');
 
     if (defined $authorization && $authorization =~ /^Basic (.*)$/) {
         my ($user, $pass) = split(/:/, (MIME::Base64::decode($1) || ":"));
 
-        my $cmd = $args->{command};
+        # Check for nulls?? s/\x00$//;
 
-        # Username and password can be anything - so just uri escape them
-        # The command is not user-provided - so no need to escape that
-        $pass = uri_escape($pass);
-        $user = uri_escape($user);
+        $user = shell_quote($user);
 
-        # cross-platform shell quote character
-        my $q = QUOTE();
-
-        my ($success, $error_message, $full_buf, $stdout_buf, $stderr_buf) = run(
-            command => "echo $q$pass$q | sudo -S -u $q$user$q $cmd",
-            verbose => 0
-        );
-
-        return [$success, $error_message, $full_buf, $stdout_buf, $stderr_buf];
+        my $hashref = run_forked("export SUDO_ASKPASS=/home/vagrant/pass.sh; /usr/bin/sudo -Au $user tee /home/test/out.txt ", {
+            child_stdin => "asdfasdfsadfasdf"
+        });
+        
+        return $hashref;
     } else {
 
     }
