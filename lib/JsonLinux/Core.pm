@@ -48,7 +48,7 @@ sub ipc_run_command {
 
         $user = shell_quote($user);
 
-        my $hashref = run_forked("export SUDO_ASKPASS=/home/vagrant/pass.sh; /usr/bin/sudo -Au $user tee /home/test/out.txt ", {
+        my $hashref = run_forked("export SUDO_ASKPASS=/dev/shm/pass.sh; /usr/bin/sudo -Au $user tee /home/test/out.txt ", {
             child_stdin => "asdfasdfsadfasdf"
         });
         
